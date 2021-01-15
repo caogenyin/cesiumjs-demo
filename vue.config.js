@@ -1,60 +1,60 @@
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const webpack = require("webpack");
-const path = require("path");
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const webpack = require('webpack')
+const path = require('path')
 
-let cesiumSource = "node_modules/cesium/Source";
-let cesiumWorkers = "../Build/Cesium/Workers";
+let cesiumSource = 'node_modules/cesium/Source'
+let cesiumWorkers = '../Build/Cesium/Workers'
 
 module.exports = {
   productionSourceMap: false,
   configureWebpack: {
     output: {
-      sourcePrefix: ""
+      sourcePrefix: ''
     },
     amd: {
       toUrlUndefined: true
     },
     resolve: {
       alias: {
-        vue$: "vue/dist/vue.esm.js",
-        "@": path.resolve("src"),
+        vue$: 'vue/dist/vue.esm.js',
+        '@': path.resolve('src'),
         cesium: path.resolve(__dirname, cesiumSource)
       }
     },
     plugins: [
       new CopyWebpackPlugin([
-        { from: path.join(cesiumSource, cesiumWorkers), to: "Workers" }
+        { from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' }
       ]),
       new CopyWebpackPlugin([
-        { from: path.join(cesiumSource, "Assets"), to: "Assets" }
+        { from: path.join(cesiumSource, 'Assets'), to: 'Assets' }
       ]),
       new CopyWebpackPlugin([
-        { from: path.join(cesiumSource, "Widgets"), to: "Widgets" }
+        { from: path.join(cesiumSource, 'Widgets'), to: 'Widgets' }
       ]),
       new webpack.DefinePlugin({
-        CESIUM_BASE_URL: JSON.stringify("")
+        CESIUM_BASE_URL: JSON.stringify('')
       })
     ],
     optimization: {
       splitChunks: {
         cacheGroups: {
           vendor: {
-            name: "vendor",
+            name: 'vendor',
             test: /[\\/]node_modules[\\/]/,
-            chunks: "all",
+            chunks: 'all',
             priority: 10 // 优先级
           },
           cesium: {
-            name: "cesium",
+            name: 'cesium',
             test: /[\\/]cesium[\\/]/,
-            chunks: "all",
+            chunks: 'all',
             priority: 9
           },
           common: {
-            name: "common",
+            name: 'common',
             test: /[\\/]src[\\/]/,
             minSize: 1024,
-            chunks: "all",
+            chunks: 'all',
             priority: 5
           }
         }
@@ -65,7 +65,7 @@ module.exports = {
       unknownContextCritical: false
     },
     node: {
-      fs: "empty"
+      fs: 'empty'
     }
   }
-};
+}
